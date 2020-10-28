@@ -6,7 +6,11 @@ bool powerSwitch();
 double menu();
 double payment(double);
 double coin_Return(double, double);
+double compute_Overhead(double);
+double compute_LaborCost(double);
+double item_Profit(double);
 void payment_Verification(double, double);
+void display(double, double);
 
 bool power = false;
 
@@ -15,7 +19,11 @@ int main() {
 	double price =  menu();
 	double pmt = payment(price);
 	payment_Verification(price, pmt);
-	coin_Return(price, pmt);
+	double userRefund = coin_Return(price, pmt);
+	//double overH = compute_Overhead(price);
+	//double laborCost = compute_LaborCost(price);
+	//double itemProfit = item_Profit(price);
+	display(price, userRefund);
 }
 
 int turnPowerOn() {
@@ -41,27 +49,27 @@ start:
 
 	switch (selection) {
 	case 1: 
-		cout << "Coke" << endl;
+		cout << "\nCoke" << endl;
 		price = 0.95;
 		break;
 	case 2:
-		cout << "Doritos" << endl;
+		cout << "\nDoritos" << endl;
 		price = 0.75;
 		break;
 	case 3:
-		cout << "Snickers" << endl;
+		cout << "\nSnickers" << endl;
 		price = 0.55;
 		break;
 	case 4:
-		cout << "Chex Mix" << endl;
+		cout << "\nChex Mix" << endl;
 		price = 0.60;
 		break;
 	case 5:
-		cout << "Pepsi" << endl;
+		cout << "\nPepsi" << endl;
 		price = 0.90;
 		break;
 	default:
-		cout << "Invalid Selection" << endl;
+		cout << "\nInvalid Selection" << endl;
 		goto start;
 	}
 	return price;
@@ -70,36 +78,48 @@ start:
 double payment(double price){
 	double paid = 0.0;
 	int pennies, nickles, dimes, quarters, one_Dollar, five_Dollar;
+	bool foreignCoin;
 
-	cout << "Please enter payment " << endl;
+start2:
 
-	cout << "Pennies: ";
-	cin >> pennies;
-	paid += pennies * 0.01;
+	cout << "\nPlease enter payment\n" << endl;
+	cout << "is this a foreign coin? type 1 for yes and 0 for no" << endl;
+	cin >> foreignCoin;
 
-	cout << "Nickles:";
-	cin >> nickles;
-	paid += nickles * 0.05;
+	if (foreignCoin == false) {
 
-	cout << "Dimes:";
-	cin >> dimes;
-	paid += dimes * 0.10;
+		cout << "Pennies: ";
+		cin >> pennies;
+		paid += pennies * 0.01;
 
-	cout << "Quarters:";
-	cin >> quarters;
-	paid += quarters * 0.25;
+		cout << "Nickles:";
+		cin >> nickles;
+		paid += nickles * 0.05;
 
-	cout << "One Dollar:";
-	cin >> one_Dollar;
-	paid += one_Dollar * 1.00;
+		cout << "Dimes:";
+		cin >> dimes;
+		paid += dimes * 0.10;
 
-	cout << "Five Dollar:";
-	cin >> five_Dollar;
-	paid += five_Dollar * 5.00;
+		cout << "Quarters:";
+		cin >> quarters;
+		paid += quarters * 0.25;
 
-	string dispense = (paid >= price) ? "dispensing item " : "Insert correct amount";
-	return paid;
+		cout << "One Dollar:";
+		cin >> one_Dollar;
+		paid += one_Dollar * 1.00;
+
+		cout << "Five Dollar:";
+		cin >> five_Dollar;
+		paid += five_Dollar * 5.00;
+
+		string dispense = (paid >= price) ? "dispensing item " : "Insert correct amount";
+		return paid;
 	}
+	else {
+		cout << "This is NOT a valid coin\n Please try again!\n" << endl;
+		goto start2;
+	}
+}
 
 void payment_Verification(double itemCost, double userPayment) {
 	double refund = itemCost - userPayment;
@@ -115,5 +135,29 @@ void payment_Verification(double itemCost, double userPayment) {
 double coin_Return(double itemCost, double userPayment) {
 	double refund = itemCost - userPayment;
 	return refund;
+}
+
+double compute_Overhead(double itemCost) {
+	double overhead = itemCost * 0.05;
+	return overhead;
+}
+
+double compute_LaborCost(double itemCost) {
+	double laborCost = itemCost * 0.25;
+	return laborCost;
+}
+
+double item_Profit(double itemCost) {
+	double itemProfit = itemCost * (0.05 + 0.35 + 0.25);
+	return itemProfit;
+}
+
+void display(double price, double refund) {
+	cout << "\n\nYour selection: " << endl;
+	cout << "Item price is: " << price << endl;
+	cout << "Your refunded amount is: " << refund << endl;
+	cout << "The labor cost is: " << compute_LaborCost(price) << endl;
+	cout << "The item overhead is: " << compute_Overhead(price) << endl;
+	cout << "Your total profit is: " << item_Profit(price) << endl;
 }
 //TODO: complete coin return in pennies, nickles, dimes,  quarters, etc...
