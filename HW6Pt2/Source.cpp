@@ -1,28 +1,29 @@
 #include <iostream>
+#include <iomanip>
 using namespace std;
 
 int turnPowerOn();
 bool powerSwitch();
-double menu();
-double payment(double);
-double coin_Return(double, double);
-double compute_Overhead(double);
-double compute_LaborCost(double);
-double item_Profit(double);
-void payment_Verification(double, double);
-void display(double, double);
+float menu();
+float payment(float);
+float coin_Return(float, float);
+float compute_Overhead(float);
+float compute_LaborCost(float);
+float item_Profit(float);
+void payment_Verification(float, float);
+void display(float, float);
 
 bool power = false;
 
 int main() {
 	turnPowerOn();
-	double price =  menu();
-	double pmt = payment(price);
+	float price =  menu();
+	float pmt = payment(price);
 	payment_Verification(price, pmt);
-	double userRefund = coin_Return(price, pmt);
-	//double overH = compute_Overhead(price);
-	//double laborCost = compute_LaborCost(price);
-	//double itemProfit = item_Profit(price);
+	float userRefund = coin_Return(price, pmt);
+	//float overH = compute_Overhead(price);
+	//float laborCost = compute_LaborCost(price);
+	//float itemProfit = item_Profit(price);
 	display(price, userRefund);
 }
 
@@ -37,9 +38,9 @@ bool powerSwitch() {
 	return 0;
 }
 
-double menu() {
+float menu() {
 	int selection;
-	double price;
+	float price;
 
 start:
 
@@ -75,8 +76,8 @@ start:
 	return price;
 }
 
-double payment(double price){
-	double paid = 0.0;
+float payment(float price){
+	float paid = 0.0;
 	int pennies, nickles, dimes, quarters, one_Dollar, five_Dollar;
 	bool foreignCoin;
 
@@ -121,8 +122,8 @@ start2:
 	}
 }
 
-void payment_Verification(double itemCost, double userPayment) {
-	double refund = itemCost - userPayment;
+void payment_Verification(float itemCost, float userPayment) {
+	float refund = itemCost - userPayment;
 
 	if (userPayment >= itemCost) {
 		cout << "Your item is dispensing" << endl;
@@ -132,30 +133,32 @@ void payment_Verification(double itemCost, double userPayment) {
 	}
 }
 
-double coin_Return(double itemCost, double userPayment) {
-	double refund = itemCost - userPayment;
-	return refund;
+float coin_Return(float itemCost, float userPayment) {
+	float refund = itemCost - userPayment;
+	float absol_Refund = refund - (refund * 2);
+
+	return absol_Refund;
 }
 
-double compute_Overhead(double itemCost) {
-	double overhead = itemCost * 0.05;
+float compute_Overhead(float itemCost) {
+	float overhead = itemCost * 0.05;
 	return overhead;
 }
 
-double compute_LaborCost(double itemCost) {
-	double laborCost = itemCost * 0.25;
+float compute_LaborCost(float itemCost) {
+	float laborCost = itemCost * 0.25;
 	return laborCost;
 }
 
-double item_Profit(double itemCost) {
-	double itemProfit = itemCost * (0.05 + 0.35 + 0.25);
+float item_Profit(float itemCost) {
+	float itemProfit = itemCost * (0.05 + 0.35 + 0.25);
 	return itemProfit;
 }
 
-void display(double price, double refund) {
+void display(float price, float refund) {
 	cout << "\n\nYour selection: " << endl;
-	cout << "Item price is: " << price << endl;
-	cout << "Your refunded amount is: " << refund << endl;
+	cout << "Item price is: " << setprecision(2) << price << endl;
+	cout << "Your refunded amount is: " << setprecision(2) << refund << endl;
 	cout << "The labor cost is: " << compute_LaborCost(price) << endl;
 	cout << "The item overhead is: " << compute_Overhead(price) << endl;
 	cout << "Your total profit is: " << item_Profit(price) << endl;
